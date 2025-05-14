@@ -5,6 +5,10 @@
   "version": "1.0.0",
   "icon": "media/logo.png",
   "publisher": "RaviVerma",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/howdyravi/AL-Interface-Tracker"
+  },
   "engines": {
     "vscode": "^1.70.0"
   },
