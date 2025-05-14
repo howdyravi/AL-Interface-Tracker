@@ -57,6 +57,9 @@ AL Interface Tracker
 ### 🧭 Find the view
 > ![alt text](./media/ALInterfacetracker_ss1.png)
 
+### 🔍 Check Interface
+> ![alt text](./media/ALInterfacetracker_ss2.png)
+
 ---
 
 ## 🤝 Contributing
