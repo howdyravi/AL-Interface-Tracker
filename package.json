@@ -1,0 +1,96 @@
+{
+  "name": "al-interface-tracker",
+  "displayName": "AL Interface Tracker",
+  "description": "Explore AL interfaces and their implementations visually inside your Business Central projects.",
+  "version": "1.0.0",
+  "icon": "media/logo.png",
+  "publisher": "RaviVerma",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:alInterfaceExplorer",
+    "onCommand:alInterfaceTracker.refresh",
+    "onCommand:alInterfaceTracker.manualRefresh",
+    "onCommand:alInterfaceTracker.collapseAll"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "alInterfaceTracker.refresh",
+        "title": "Refresh",
+        "icon": {
+          "light": "media/refresh-light.svg",
+          "dark": "media/refresh-dark.svg"
+        }
+      },
+      {
+        "command": "alInterfaceTracker.manualRefresh",
+        "title": "Manual Refresh",
+        "icon": {
+          "light": "media/refresh-light.svg",
+          "dark": "media/refresh-dark.svg"
+        }
+      },
+      {
+        "command": "alInterfaceTracker.collapseAll",
+        "title": "Collapse All",
+        "icon": {
+          "light": "media/collapse-light.svg",
+          "dark": "media/collapse-dark.svg"
+        }
+      },
+      {
+        "command": "alInterfaceTracker.openInterface",
+        "title": "Open Interface",
+        "icon": {
+          "light": "open_interface_light.svg",
+          "dark": "open_interface_dark.svg"
+        }
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "alInterfaceTracker",
+          "title": "AL Interface Tracker",
+          "icon": "media/interface.svg"
+        }
+      ]
+    },
+    "views": {
+      "alInterfaceTracker": [
+        {
+          "id": "alInterfaceExplorer",
+          "name": "Interfaces",
+          "icon": "media/interface.svg"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "alInterfaceTracker.manualRefresh",
+          "when": "view == alInterfaceExplorer",
+          "group": "navigation"
+        },
+        {
+          "command": "alInterfaceTracker.collapseAll",
+          "when": "view == alInterfaceExplorer",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "when": "view == alInterfaceExplorer && viewItem == interface",
+          "command": "alInterfaceTracker.openInterface",
+          "group": "navigation"
+        }
+      ]
+    }
+  }
+}
