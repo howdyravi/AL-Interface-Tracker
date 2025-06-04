@@ -58,13 +58,13 @@ AL Interface Tracker
 
 ## 📸 Screenshots
 ### 🧭 Find the view
-> ![alt text](./media/ALInterfacetracker_ss1.png)
+> ![Explore Interface](./media/ALInterfacetracker_ss1.png)
 
 ### 👁️ Open Interface
-> ![alt text](./media/ALInterfacetracker_ss2.png)
+> ![Open Interface](./media/ALInterfacetracker_ss2.png)
 
 ### 🔍 Search Interface
-> ![alt text](./media/search_interface.mp4)
+> ![Search Interface](./media/search_interface.gif)
 
 ---
 
