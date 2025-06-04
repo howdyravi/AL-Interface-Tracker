@@ -1,4 +1,3 @@
-/// InterfaceTrackerProvider.Json
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
@@ -19,6 +18,17 @@ class InterfaceTrackerProvider {
         this._onDidChangeTreeData = new vscode.EventEmitter();
         this.onDidChangeTreeData = this._onDidChangeTreeData.event;
         this.interfaceMap = new Map();
+        this.searchQuery = '';
+    }
+
+    setSearchQuery(query) {
+        this.searchQuery = query.toLowerCase();
+        vscode.commands.executeCommand('setContext', 'alInterfaceTracker.hasFilter', !!query);
+        this._onDidChangeTreeData.fire();
+    }
+
+    clearSearchQuery() {
+        this.setSearchQuery('');
     }
 
     refresh() {
@@ -59,7 +69,6 @@ class InterfaceTrackerProvider {
             const line = lines[i].trim();
             if (!line || line.startsWith('//') || line.startsWith('///')) continue;
 
-            // Collect multiline interface declaration
             if (line.match(/^interface\s|^interface\s*$/i) || insideMultilineInterface) {
                 if (!insideMultilineInterface) {
                     interfaceStartLine = i;
@@ -71,12 +80,10 @@ class InterfaceTrackerProvider {
                 if (line.includes('{')) {
                     insideMultilineInterface = false;
                     const interfaceMatch = collectedLines.match(/^.*interface\s+"?(.+?)"?\s*{/i);
-                    collectedLines = ''; // reset
+                    collectedLines = '';
 
                     if (interfaceMatch) {
                         const iface = interfaceMatch[1];
-                        console.log(`🟢 Found interface "${iface}" in file: ${filePath} (line ${interfaceStartLine})`);
-
                         if (!this.interfaceMap.has(iface)) {
                             this.interfaceMap.set(iface, {});
                         }
@@ -108,41 +115,60 @@ class InterfaceTrackerProvider {
         }
     }
 
-
-
     getTreeItem(element) {
         return element;
     }
 
     async getChildren(element) {
         if (!element) {
-            const root = new InterfaceItem('Interfaces', vscode.TreeItemCollapsibleState.Expanded, 'All Interfaces', 'library', null, 'interfacesRoot');
-            return [root];
+            return [new InterfaceItem('Interfaces', vscode.TreeItemCollapsibleState.Expanded, 'All Interfaces', 'library', null, 'interfacesRoot')];
         }
+
+        if (!element) {
+            const rootItem = new InterfaceItem(
+                'Interfaces',
+                vscode.TreeItemCollapsibleState.Expanded,
+                'All Interfaces',
+                'library',
+                null,
+                'interfacesRoot'
+            );
+            if (this.searchQuery) {
+                rootItem.command = {
+                    command: 'alInterfaceTracker.clearSearchQuery',
+                    title: 'Clear Filter'
+                };
+                rootItem.iconPath = new vscode.ThemeIcon('filter');
+            }
+            return [rootItem];
+        }
+
 
         if (element.contextValue === 'interfacesRoot') {
             if (this.interfaceMap.size === 0) {
                 return [new vscode.TreeItem("No interfaces found. Refresh to scan your AL files.")];
             }
 
-            return [...this.interfaceMap.keys()].sort().map(iface => {
-                const ifaceData = this.interfaceMap.get(iface);
-                const item = new InterfaceItem(
-                    iface,
-                    vscode.TreeItemCollapsibleState.Collapsed,
-                    `Interface: ${iface}`,
-                    'symbol-interface',
-                    null,
-                    'interface',
-                    { filePath: ifaceData?.definition?.filePath, line: ifaceData?.definition?.line }
-                );
-                return item;
-            });
+            return [...this.interfaceMap.keys()]
+                .filter(iface => iface.toLowerCase().includes(this.searchQuery))
+                .sort()
+                .map(iface => {
+                    const ifaceData = this.interfaceMap.get(iface);
+                    return new InterfaceItem(
+                        iface,
+                        vscode.TreeItemCollapsibleState.Collapsed,
+                        `Interface: ${iface}`,
+                        'symbol-interface',
+                        null,
+                        'interface',
+                        { filePath: ifaceData?.definition?.filePath, line: ifaceData?.definition?.line }
+                    );
+                });
         }
 
         if (element.contextValue === 'interface') {
             const ifaceData = this.interfaceMap.get(element.label);
-            if (!ifaceData || !ifaceData.implementations) return [];
+            if (!ifaceData?.implementations) return [];
 
             return [...ifaceData.implementations.keys()].sort().map(folder =>
                 new InterfaceItem(folder, vscode.TreeItemCollapsibleState.Collapsed, `App Folder: ${folder}`, 'folder', null, 'folder', {
@@ -180,30 +206,19 @@ class InterfaceTrackerProvider {
     }
 
     openInterface(item) {
-        try {
-            const filePath = item?.data?.filePath;
-            const line = item?.data?.line || 0;
-
-            console.log(`👁️ Interface: ${item.label}, FilePath: ${filePath}, Line: ${line}`);
-
-            if (!filePath || !fs.existsSync(filePath)) {
-                console.error("❌ Interface file not found or invalid path.");
-                vscode.window.showErrorMessage("Interface file not found.");
-                return;
-            }
-
-            vscode.workspace.openTextDocument(filePath).then(doc => {
-                vscode.window.showTextDocument(doc, {
-                    selection: new vscode.Range(line, 0, line, 0)
-                });
-            });
-        } catch (error) {
-            console.error("❌ Error opening interface:", error);
-            vscode.window.showErrorMessage(`Error opening interface: ${error.message}`);
+        const filePath = item?.data?.filePath;
+        const line = item?.data?.line || 0;
+        if (!filePath || !fs.existsSync(filePath)) {
+            vscode.window.showErrorMessage("Interface file not found.");
+            return;
         }
+
+        vscode.workspace.openTextDocument(filePath).then(doc => {
+            vscode.window.showTextDocument(doc, {
+                selection: new vscode.Range(line, 0, line, 0)
+            });
+        });
     }
-
-
 
     iconForType(type) {
         switch (type.toLowerCase()) {

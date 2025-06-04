@@ -1,8 +1,8 @@
 {
   "name": "al-interface-tracker",
   "displayName": "AL Interface Tracker",
-  "description": "Explore AL interfaces and their implementations visually inside your Business Central projects.",
-  "version": "1.0.0",
+  "description": "Track and explore all AL interface implementations across your Business Central workspace.",
+  "version": "1.1.0",
   "icon": "media/logo.png",
   "publisher": "RaviVerma",
   "repository": {
@@ -33,14 +33,6 @@
         }
       },
       {
-        "command": "alInterfaceTracker.manualRefresh",
-        "title": "Manual Refresh",
-        "icon": {
-          "light": "media/refresh-light.svg",
-          "dark": "media/refresh-dark.svg"
-        }
-      },
-      {
         "command": "alInterfaceTracker.collapseAll",
         "title": "Collapse All",
         "icon": {
@@ -54,6 +46,27 @@
         "icon": {
           "light": "open_interface_light.svg",
           "dark": "open_interface_dark.svg"
+        }
+      },
+      {
+        "command": "alInterfaceTracker.setSearchQuery",
+        "title": "AL: Search Interface"
+      },
+      {
+        "command": "alInterfaceTracker.clearSearchQuery",
+        "title": "Clear Filter",
+        "icon": {
+          "light": "media/filter-reset-light.svg",
+          "dark": "media/filter-reset-dark.svg"
+        }
+      },
+      {
+        "command": "alInterfaceTracker.openInterface",
+        "title": "Open Interface",
+        "category": "AL Interface Tracker",
+        "icon": {
+          "light": "media/open_interface_light.svg",
+          "dark": "media/open_interface_dark.svg"
         }
       }
     ],
@@ -78,7 +91,7 @@
     "menus": {
       "view/title": [
         {
-          "command": "alInterfaceTracker.manualRefresh",
+          "command": "alInterfaceTracker.refresh",
           "when": "view == alInterfaceExplorer",
           "group": "navigation"
         },
@@ -86,13 +99,18 @@
           "command": "alInterfaceTracker.collapseAll",
           "when": "view == alInterfaceExplorer",
           "group": "navigation"
+        },
+        {
+          "command": "alInterfaceTracker.clearSearchQuery",
+          "when": "view == alInterfaceExplorer && alInterfaceTracker.hasFilter",
+          "group": "navigation"
         }
       ],
       "view/item/context": [
         {
-          "when": "view == alInterfaceExplorer && viewItem == interface",
           "command": "alInterfaceTracker.openInterface",
-          "group": "navigation"
+          "when": "view == alInterfaceExplorer && viewItem == interface",
+          "group": "inline"
         }
       ]
     }
