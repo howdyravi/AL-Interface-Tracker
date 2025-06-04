@@ -15,7 +15,8 @@
 2. Open a Business Central AL project in VS Code.
 3. Check the **"AL Interface Tracker"** view on the side panel.
 4. Use **"Collapse All"** action to collapse the tree view.
-5. Use **"Manual Refresh"** action to update the view.
+5. Use **"Refresh"** action to update the view.
+6. **"Search Interfaces"** from the option from the Command Pallet.
 
 ---
 
@@ -39,9 +40,11 @@ AL Interface Tracker
 
 - 🔍 Detects and displays **interface definitions** across your AL workspace.
 - 🧭 Lists all **implementations grouped by workspace folder**.
-- 👁️ Quickly **open interface definitions** via right-click context menu.
+- 👁️ Navigate to the Interface Defination using **open interface**.
 - 🧩 Recognizes **quoted** and **multiline interface**.
 - 🧰 Convenient commands to **refresh** and **collapse** the tree.
+- 📖 **Search Interface** definition without scolling the whole list.
+
 
 ---
 
@@ -55,10 +58,13 @@ AL Interface Tracker
 
 ## 📸 Screenshots
 ### 🧭 Find the view
-> ![alt text](./media/ALInterfacetracker_ss1.png)
+> ![Explore Interface](./media/ALInterfacetracker_ss1.png)
 
-### 🔍 Check Interface
-> ![alt text](./media/ALInterfacetracker_ss2.png)
+### 👁️ Open Interface
+> ![Open Interface](./media/ALInterfacetracker_ss2.png)
+
+### 🔍 Search Interface
+> ![Search Interface](./media/search_interface.gif)
 
 ---
 
