@@ -57,14 +57,14 @@ AL Interface Tracker
 ---
 
 ## 📸 Screenshots
-### 🧭 Find the view
+### 🧭 Explore the view
 > ![Explore Interface](./media/ALInterfacetracker_ss1.png)
 
 ### 👁️ Open Interface
 > ![Open Interface](./media/ALInterfacetracker_ss2.png)
 
 ### 🔍 Search Interface
-> ![Search Interface](./media/search_interface.gif)
+> ![Search Interface](https://raw.githubusercontent.com/howdyravi/AL-Interface-Tracker/master/media/search_interface.gif)
 
 ---
 
