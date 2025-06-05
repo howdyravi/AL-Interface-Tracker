@@ -13,10 +13,11 @@
 
 1. Install the extension from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/).
 2. Open a Business Central AL project in VS Code.
-3. Check the **"AL Interface Tracker"** view on the side panel.
-4. Use **"Collapse All"** action to collapse the tree view.
-5. Use **"Refresh"** action to update the view.
-6. **"Search Interfaces"** from the option from the Command Pallet.
+3. Check the **"AL Interface Tracker"** view on the side explorer pane.
+4. Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`).
+5. Run: `AL: Search Interfaces`to look for a specific **"Interface"**.
+6. Use **"Collapse All"** action to collapse the tree view.
+7. Use **"Refresh"** action to update the view.
 
 ---
 
@@ -44,6 +45,7 @@ AL Interface Tracker
 - 🧩 Recognizes **quoted** and **multiline interface**.
 - 🧰 Convenient commands to **refresh** and **collapse** the tree.
 - 📖 **Search Interface** definition without scolling the whole list.
+- 🕵️‍♂️ Clean, modern UI with collapsible tree nodes.
 
 
 ---

@@ -66,34 +66,51 @@ class InterfaceTrackerProvider {
         let interfaceStartLine = 0;
 
         for (let i = 0; i < lines.length; i++) {
-            const line = lines[i].trim();
-            if (!line || line.startsWith('//') || line.startsWith('///')) continue;
+            const rawLine = lines[i];
+            const line = rawLine.trim();
 
-            if (line.match(/^interface\s|^interface\s*$/i) || insideMultilineInterface) {
-                if (!insideMultilineInterface) {
-                    interfaceStartLine = i;
-                }
+            // Skip empty lines, comments, and pragmas
+            if (!line || line.startsWith('//') || line.startsWith('///') || line.startsWith('#pragma')) continue;
 
-                collectedLines += ' ' + line;
-                insideMultilineInterface = true;
-
-                if (line.includes('{')) {
-                    insideMultilineInterface = false;
-                    const interfaceMatch = collectedLines.match(/^.*interface\s+"?(.+?)"?\s*{/i);
-                    collectedLines = '';
-
-                    if (interfaceMatch) {
-                        const iface = interfaceMatch[1];
-                        if (!this.interfaceMap.has(iface)) {
-                            this.interfaceMap.set(iface, {});
-                        }
-                        this.interfaceMap.get(iface).definition = { filePath, line: interfaceStartLine };
-                    }
-                }
-
+            // Check if interface starts here
+            if (!insideMultilineInterface && line.match(/^interface\s/i)) {
+                collectedLines = line;
+                interfaceStartLine = i;
+                insideMultilineInterface = !line.includes('{'); // if doesn't open here, expect multi-line
+                if (!insideMultilineInterface) i--; // stay on this line to process it now
                 continue;
             }
 
+            // Continue collecting multi-line interface declarations
+            if (insideMultilineInterface) {
+                collectedLines += ' ' + line;
+                if (line.includes('{')) {
+                    insideMultilineInterface = false;
+                    i--; // process it now
+                }
+                continue;
+            }
+
+            // Now extract interface name if declaration is ready
+            if (collectedLines) {
+                const cleanedLine = collectedLines
+                    .replace(/#pragma.*?(?=interface|$)/gi, '')
+                    .replace(/#pragma.*/gi, '')
+                    .trim();
+
+                const interfaceMatch = cleanedLine.match(/^.*interface\s+"?(.+?)"?\s*{/i);
+                collectedLines = '';
+
+                if (interfaceMatch) {
+                    const iface = interfaceMatch[1].trim();
+                    if (!this.interfaceMap.has(iface)) {
+                        this.interfaceMap.set(iface, {});
+                    }
+                    this.interfaceMap.get(iface).definition = { filePath, line: interfaceStartLine };
+                }
+            }
+
+            // Now detect implementations
             const objectMatch = line.match(/^(table|page|codeunit|report|query|enum)\s+\d+\s+"?(.+?)"?\s+implements\s+(.+)/i);
             if (objectMatch) {
                 const [_, type, name, interfaces] = objectMatch;
@@ -113,6 +130,7 @@ class InterfaceTrackerProvider {
                 });
             }
         }
+
     }
 
     getTreeItem(element) {
@@ -144,27 +162,34 @@ class InterfaceTrackerProvider {
         }
 
 
+
         if (element.contextValue === 'interfacesRoot') {
             if (this.interfaceMap.size === 0) {
                 return [new vscode.TreeItem("No interfaces found. Refresh to scan your AL files.")];
             }
 
-            return [...this.interfaceMap.keys()]
+            const filtered = [...this.interfaceMap.keys()]
                 .filter(iface => iface.toLowerCase().includes(this.searchQuery))
-                .sort()
-                .map(iface => {
-                    const ifaceData = this.interfaceMap.get(iface);
-                    return new InterfaceItem(
-                        iface,
-                        vscode.TreeItemCollapsibleState.Collapsed,
-                        `Interface: ${iface}`,
-                        'symbol-interface',
-                        null,
-                        'interface',
-                        { filePath: ifaceData?.definition?.filePath, line: ifaceData?.definition?.line }
-                    );
-                });
+                .sort();
+
+            if (this.searchQuery && filtered.length === 0) {
+                vscode.window.showInformationMessage(`No interfaces match "${this.searchQuery}".`);
+            }
+
+            return filtered.map(iface => {
+                const ifaceData = this.interfaceMap.get(iface);
+                return new InterfaceItem(
+                    iface,
+                    vscode.TreeItemCollapsibleState.Collapsed,
+                    `Interface: ${iface}`,
+                    'symbol-interface',
+                    null,
+                    'interface',
+                    { filePath: ifaceData?.definition?.filePath, line: ifaceData?.definition?.line }
+                );
+            });
         }
+
 
         if (element.contextValue === 'interface') {
             const ifaceData = this.interfaceMap.get(element.label);

@@ -2,7 +2,7 @@
   "name": "al-interface-tracker",
   "displayName": "AL Interface Tracker",
   "description": "Track and explore all AL interface implementations across your Business Central workspace.",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "icon": "media/logo.png",
   "publisher": "RaviVerma",
   "repository": {
