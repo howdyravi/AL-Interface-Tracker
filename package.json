@@ -121,6 +121,12 @@
           "group": "help"
         }
       ]
-    }
+    },
+    "extensionNews": [
+      {
+        "version": "1.2.0",
+        "url": "https://github.com/howdyravi/AL-Interface-Tracker/blob/master/CHANGELOG.md"
+      }
+    ]
   }
 }
