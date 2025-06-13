@@ -18,6 +18,8 @@
 5. Run: `AL: Search Interfaces`to look for a specific **"Interface"**.
 6. Use **"Collapse All"** action to collapse the tree view.
 7. Use **"Refresh"** action to update the view.
+8. **"Unimplemented Interfaces"** are now marked with a ❗ for easy identification.
+9. Right Click on the object to **"Reveal on the AL Interface Tracker**".
 
 ---
 
@@ -68,6 +70,8 @@ AL Interface Tracker
 ### 🔍 Search Interface
 > ![Search Interface](https://raw.githubusercontent.com/howdyravi/AL-Interface-Tracker/master/media/search_interface.gif)
 
+### 📌 Reveal Interface
+> ![Reveal Interface](./media/reveal_Interface.ss.png)
 ---
 
 ## 🤝 Contributing

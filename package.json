@@ -2,7 +2,7 @@
   "name": "al-interface-tracker",
   "displayName": "AL Interface Tracker",
   "description": "Track and explore all AL interface implementations across your Business Central workspace.",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "icon": "media/logo.png",
   "publisher": "RaviVerma",
   "repository": {
@@ -18,8 +18,7 @@
   "activationEvents": [
     "onView:alInterfaceExplorer",
     "onCommand:alInterfaceTracker.refresh",
-    "onCommand:alInterfaceTracker.manualRefresh",
-    "onCommand:alInterfaceTracker.collapseAll"
+    "onCommand:alInterfaceTracker.manualRefresh"
   ],
   "main": "./extension.js",
   "contributes": {
@@ -30,14 +29,6 @@
         "icon": {
           "light": "media/refresh-light.svg",
           "dark": "media/refresh-dark.svg"
-        }
-      },
-      {
-        "command": "alInterfaceTracker.collapseAll",
-        "title": "Collapse All",
-        "icon": {
-          "light": "media/collapse-light.svg",
-          "dark": "media/collapse-dark.svg"
         }
       },
       {
@@ -68,6 +59,14 @@
           "light": "media/open_interface_light.svg",
           "dark": "media/open_interface_dark.svg"
         }
+      },
+      {
+        "command": "alInterfaceTracker.revealInterfaceInTree",
+        "title": "Reveal in Interface Tracker"
+      },
+      {
+        "command": "alInterfaceTracker.showReleaseNotes",
+        "title": "Show Release Notes"
       }
     ],
     "viewsContainers": {
@@ -96,11 +95,6 @@
           "group": "navigation"
         },
         {
-          "command": "alInterfaceTracker.collapseAll",
-          "when": "view == alInterfaceExplorer",
-          "group": "navigation"
-        },
-        {
           "command": "alInterfaceTracker.clearSearchQuery",
           "when": "view == alInterfaceExplorer && alInterfaceTracker.hasFilter",
           "group": "navigation"
@@ -111,6 +105,20 @@
           "command": "alInterfaceTracker.openInterface",
           "when": "view == alInterfaceExplorer && viewItem == interface",
           "group": "inline"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "alInterfaceTracker.revealInterfaceInTree",
+          "when": "editorLangId == al",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "alInterfaceTracker.showReleaseNotes",
+          "when": "true",
+          "group": "help"
         }
       ]
     }
