@@ -1,9 +1,14 @@
-# Change Log
+# Changelog
 
-All notable changes to the "al-interface-tracker" extension will be documented in this file.
+## [1.2.0] 
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+### ✨ New Features
+- **🔍 Improved Search Interface**: Enhanced the interface search experience with better filtering and usability for large workspaces.
+- **📂 Reveal Interface from File**: You can now right-click or use a command to locate and reveal any interface directly in the tree view from your AL file.
+- **❗ Unimplemented Interface Indicator**: Interfaces with no implementations are now clearly marked with a ❗ symbol, helping you quickly spot gaps.
 
-## [Unreleased]
+> ℹ️ Want to see it in action? Check out the updated screenshots in the [`README.md`](./README.md).
 
-- Initial release
+---
+
+Thanks for using **AL Interface Tracker**! 🚀
