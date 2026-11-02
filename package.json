@@ -21,6 +21,14 @@
     "onCommand:alInterfaceTracker.manualRefresh"
   ],
   "main": "./extension.js",
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.99.0",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^10.14.0"
+  },
   "contributes": {
     "commands": [
       {
